@@ -1,0 +1,637 @@
+<!--
+order: 0
+title: "XIBC Overview"
+parent:
+  title: "XIBC"
+-->
+
+# `XIBC`
+
+Teleport Extensible Inter-blockchain Communication Protocol.
+
+## Synopsis
+
+XIBC is an extension of [IBC](https://ibcprotocol.org/). It is an interoperability protocol for communicating arbitrary data between arbitrary state machines.
+
+XIBC can be used to build a wide range of cross-chain applications, including but not limited to token transfers, non-fungible token transfers and contract invocations.
+
+XIBC allows two chains to communicate via a third chain(e.g. Teleport) which they both trust as a relay chain.
+
+### Differences from IBC
+
+* The participating chains only need to be connected to the relay chain
+* Better support for non-BFT consensus machines, e.g. Bitcoin and Ethereum
+* Support cross-chain interoperability for contracts
+* Multiple cross-chain interoperability in one packet
+* Composable state verifications, such as `Multi-Party Threshold Signature` and `ZK verify`
+* Clean up data packets at the end of their life cycle
+
+### Characteristics
+
+* Secure, reliable cross-chain interoperability protocol based on cryptography
+* Easy and seamless integration
+* Support homogeneous and heterogeneous chains
+* Support arbitrary data cross-chain communication
+* Support atomic cross-chain contract invocation
+* Composable state verifications and applications
+* Efficient and verifiable relay chain
+
+## Components
+
+### Clients
+
+XIBC clients are verification machines that are identified by a unique client id. XIBC clients track the consensus states of other blockchains and the proof specs of those blockchains that are required to properly verify proofs against the client's consensus state. The XIBC defines several basic client type:
+
+* Light client
+* [TSS client](./tss.md)
+* ZK client
+
+They can be combined to verify any chain. The first supported blockchains include:
+
+* Bitcoin
+* Ethereum
+* Tendermint
+* Avalanche
+* Solona
+* Polygon
+* BSC
+
+### Proofs and Paths
+
+In XIBC, blockchains do not directly pass messages to each other over the network.
+
+To communicate, a blockchain commits some state to a precisely defined path reserved for a specific message type and a specific counterparty. For example, a blockchain that stores a specific endpoint as part of a packet intended to be relayed to a contract on the counterparty chain.
+
+A relayer process monitors updates to these paths and relays messages by submitting the data stored under the path along with a proof of that data to the counterparty chain.
+
+### Ports
+
+An XIBC contract can bind to any number of ports. Each port must be identified by a unique portID. Since XIBC is designed to be secure with mutually-distrusted modules that operate on the same ledger, binding a port returns the dynamic object capability. To take action on a particular port, for example, to send a packet with its portID, a module must provide the dynamic object capability to the XIBC handler.
+
+XIBC contracts are responsible for claiming the capability that is returned on `BindPort`.
+
+### Packets
+
+Contracts communicate with each other by sending packets over XIBC ports. All XIBC packets contain:
+
+* A sequence to optionally enforce ordering
+* Source clientID
+* Destination clientID
+* Relay clientID
+  
+  If the relay chain is specified, it means the relay chain mode is used.
+
+* A set of sub-packets. each packet contains:
+  * PortID
+    This port allow the contracts to know the receiver contract of a given packet.
+  * Data
+
+Contracts send custom application data to each other inside the `Data []byte` field of the XIBC sub-packet. Sub-packet data is completely opaque to XIBC handlers. The sender contract must encode their application-specific packet information into the Data field of packets. The receiver contract must decode that Data back to the original application data.
+
+### Receipts
+
+XIBC writes a packet receipt for each sequence it has received. This receipt contains no information and is simply a marker intended to signify that the destination chain has received a packet at the specified sequence. This avoids the double spending issue.
+
+### Acknowledgements
+
+Contracts also write application-specific acknowledgements when processing a packet. Acknowledgements can be done:
+
+* Synchronously on `OnRecvPacket` if the contract processes packets as soon as they are received from XIBC contract.
+
+* Asynchronously if contract processes packets at some later point after receiving the packet.
+
+This acknowledgement data is opaque to XIBC much like the packet Data and is treated by XIBC as a simple byte string `[]byte`. The receiver contracts must encode their acknowledgement so that the sender contact can decode it correctly.
+
+The acknowledgement can encode whether the packet processing succeeded or failed, along with additional information that allows the sender contract to take appropriate action.
+
+After the acknowledgement has been written by the receiving chain, a relayer relays the acknowledgement back to the original sender contract which then executes application-specific acknowledgment logic using the contents of the acknowledgement. This acknowledgement can involve rolling back packet-send changes in the case of a failed acknowledgement (refunding senders).
+
+After an acknowledgement is received successfully on the original sender the chain, the XIBC contact deletes the corresponding packet commitment as it is no longer needed.
+
+## Workflows
+
+### Participating chain <--> relay chain
+
+```sequence
+    participant User
+    participant ChainA
+    participant Relayer
+    participant Teleport
+
+    User->ChainA: Send cross-chain tx 
+    ChainA->ChainA:  Generate cross-chain packet
+    Relayer-->ChainA: Listen for cross-chain packet
+    Relayer-->ChainA: Query proof and header
+    Relayer->Teleport: Update header, relay packet
+    Teleport->Teleport: execute packet, generate acknowledge
+    Relayer-->Teleport: Listen for acknowledge
+    Relayer-->Teleport: Query acknowledge proof and Header
+    Relayer->ChainA: Update header，relay acknowledge
+    ChainA->ChainA: Execute acknowledge
+```
+
+### Participating chain <--> participating chain
+
+```sequence
+    participant User
+    participant ChainA
+    participant Relayer1
+    participant Teleport
+    participant Relayer2
+    participant ChainB
+
+    User->ChainA: Send cross-chain tx 
+    ChainA->ChainA: Generate cross-chain packet
+    Relayer1-->ChainA: Listen for cross-chain packet
+    Relayer1-->ChainA: Query proof and header
+    Relayer1->Teleport: Update header, relay packet
+    Teleport->Teleport: Store packet
+    Relayer2-->Teleport: Listen for cross-chain packet
+    Relayer2-->Teleport: Query proof and header
+    Relayer2->ChainB: Update header, relay packet
+    ChainB->ChainB: execute packet, generate acknowledge
+    Relayer2-->ChainB: Listen for
+    Relayer2-->ChainB: Query acknowledge proof and header
+    Relayer2->Teleport: Update header，relay acknowledge
+    Teleport->Teleport: Store acknowledge 
+    Relayer1-->Teleport: Listen for acknowledge
+    Relayer1-->Teleport: Query acknowledge proof and header
+    Relayer1->ChainA: Update header，relay acknowledge
+    ChainA->ChainA: Execute acknowledge
+```
+
+### Client updating
+
+When the relayer observes that the client needs to be updated(e.g. a new cross-chain data packet needs to be accepted, the client will lose its activity), it will obtain the appropriate client state from the counterparty chain.
+
+Relayer
+
+```text
+                                                |
+                                                | Client relayed from relayer that as
+                                                | an observer of the counterparty chain
+                                                v
+                                        +-----------------+ 
+                                        |                 |
+                                        | Client Contract |
+                                        |                 |
+                                        |  update state   |
+                                        |                 |
+                                        +-----------------+ 
+```
+
+### Packet execution
+
+#### SendPacket
+
+Users can use XIBC basic contracts for cross-chain interoperability, such as cross-chain transfer and cross-chain govern, or they can implement their own cross-chain operation contracts based on XIBC basic contracts.
+
+```text
+                                        +-----------------+ 
+                                        |                 |
+                                        |  User Contract  |
+                                        |                 |
+                                        |                 |
+                                        +-----------------+ 
+                                                 |
+                                                 |  Developers can implement their own cross-chain operations
+                                                 |  based on the XIBC basic contract
+                                                 |
+                                                 v
++----------------+  +----------------+  +-----------------+
+|                |  |                |  |                 |
+| ERC20-transfer |  | CrossChain-gov |  |  Contract-call  |
+|                |  |                |  |                 |
+|                |  |                |  | generate packet |
+|                |  |                |  |                 |
++----------------+  +----------------+  +-----------------+
+                                                 |
+                                                 |
+                                                 |
+                                                 v
+                                       +-------------------+ 
+                                       |                   |
+                                       |   PacketHandler   |
+                                       |                   |
+                                       |  save commitment, |
+                                       |  generate event   |
+                                       |                   |
+                                       +-------------------+ 
+
+```
+
+#### Receive packet
+
+```text
+                                                |
+                                                | Packet relayed from relayer that as
+                                                | an observer of the counterparty chain
+                                                v
+                                      +--------------------+ 
+                                      |                    |
+                                      |    PacketHandler   |
+                                      |                    |
+                                      |   save receipt,    |
+                                      |   handle packet,   |
+                                      |  save acknowledge  |
+                                      |                    |
+                                      +--------------------+ 
+                                                |
+                                                |
+                                                |
+                                                v
+                                      +--------------------+ 
+                                      |                    |
+                                      |       Routing      |
+                                      |                    |
+                                      | loop packet, route |
+                                      | sub-packets to XIBC|
+                                      | basic contracts    |
+                                      |                    |
+                                      +--------------------+ 
+                                                 |
+                                                 | If any sub-package execution fails, 
+                                                 | revert all state changes.
+                                                 v
++----------------+  +----------------+  +-----------------+
+|                |  |                |  |                 |
+| ERC20-transfer |  | CrossChain-gov |  |  Contract-call  |
+|                |  |                |  |                 |
+|                |  |                |  |      excute     |
+|                |  |                |  |    sub-packet   |
+|                |  |                |  |                 |
++----------------+  +----------------+  +-----------------+
+                                                 |
+                                                 | 
+                                                 |
+                                                 v
+                                        +-----------------+ 
+                                        |                 |
+                                        |  User Contract  |
+                                        |                 |
+                                        |                 |
+                                        +-----------------+ 
+```
+
+#### Receive acknowledgement
+
+```text
+                                                |
+                                                | Acknowledgement relayed from relayer that as
+                                                | an observer of the counterparty chain
+                                                v
+                                      +--------------------+ 
+                                      |                    |
+                                      |    PacketHandler   |
+                                      |                    |
+                                      |    handle ack,     |
+                                      | delete commitment  |
+                                      |                    |
+                                      |                    |
+                                      +--------------------+ 
+                                                |
+                                                |
+                                                |
+                                                v
+                                      +--------------------+ 
+                                      |                    |
+                                      |       Routing      |
+                                      |                    |
+                                      |  loop ack, route   |
+                                      |  sub-acks to XIBC  |
+                                      |  basic contracts   |
+                                      |                    |
+                                      +--------------------+ 
+                                                 |
+                                                 | If any sub-package execution fails, 
+                                                 | revert all state changes.
+                                                 v
++----------------+  +----------------+  +-----------------+
+|                |  |                |  |                 |
+| ERC20-transfer |  | CrossChain-gov |  |  Contract-call  |
+|                |  |                |  |                 |
+|                |  |                |  |      excute     |
+|                |  |                |  |      sub-ack    |
+|                |  |                |  |                 |
++----------------+  +----------------+  +-----------------+
+                                                 |
+                                                 | 
+                                                 |
+                                                 v
+                                        +-----------------+ 
+                                        |                 |
+                                        |  User Contract  |
+                                        |                 |
+                                        |                 |
+                                        +-----------------+ 
+```
+
+## Relayer Incentivisation
+
+The relay process must have access to accounts on both chains with sufficient balance to pay for transaction fees, in order to ensure the forward flow of cross-chain data packets, incentivisation is necessary.
+
+User can specify a cross-chain fee for the packet, and when the acknowledgement is sent back to the originating chain, the relayer will get the fee.
+
+## Exception Handling
+
+Because the relayer is positively motivated, we can think that sufficient cross-chain transaction fees will allow cross-chain operations to be actively executed.
+
+Therefore, when the user finds that his cross-chain transaction is not executed in time, he can increase his transaction fee to promote the cross-chain transaction.
+
+XIBC alows user replace cross-chain operation with higher cross-chain fees by specifying the packet sequence.
+
+## Technical Specification
+
+### Definitions
+
+#### Client inteface
+
+```solidity
+interface Client {
+    // status returns the status of the current client
+    function status() external view returns (Status);
+
+    // latestHeight returns the current latest height of the client
+    function latestHeight() external view returns (Height.Data memory);
+
+    // initializeState initializes the client state.
+    function initializeState(
+        bytes calldata clientState,
+        bytes calldata consensusState
+    ) external;
+
+    // checkHeaderAndUpdateState checkes the header and update clientState, consensusState
+    function UpdateState(address caller, bytes calldata header)
+        external;
+
+    // upgradeState upgrades the client to a new client state.
+    function upgradeState(
+        address caller,
+        bytes calldata clientState,
+        bytes calldata consensusState
+    ) external;
+
+    // verifyPacketCommitment verifies the commitment of the cross-chain data packet
+    function verifyPacketCommitment(
+        address caller,
+        Height.Data calldata height,
+        bytes calldata proof,
+        string calldata sourceChain,
+        string calldata destChain,
+        uint64 sequence,
+        bytes calldata commitmentBytes
+    ) external view;
+
+    // verifyPacketAcknowledgement verifies the acknowledgement of the cross-chain data packet
+    function verifyPacketAcknowledgement(
+        address caller,
+        Height.Data calldata height,
+        bytes calldata proof,
+        string calldata sourceChain,
+        string calldata destChain,
+        uint64 sequence,
+        bytes calldata acknowledgement
+    ) external view;
+}
+```
+
+#### Packet
+
+```protobuf
+message Packet {
+    // number corresponds to the order of sends and receives, where a Packet
+    // with an earlier sequence number must be sent and received before a Packet
+    // with a later sequence number.
+    uint64 sequence = 1;
+    // identifies the chain id of the sending chain.
+    string source_chain = 2;
+    // identifies the chain id of the receiving chain.
+    string destination_chain = 3;
+    // identifies the chain id of the relay chain.
+    string relay_chain = 4;
+    // identifies the ports on the sending chain and destination chain
+    repeated string ports = 5;
+    // actual opaque bytes transferred directly to the application module
+    repeated bytes data_list = 6;
+}
+```
+
+#### Acknowledgement
+
+```protobuf
+message Acknowledgement {
+    // the execution results of the packet data list
+    repeated bytes results = 1;
+    // error message
+    string message = 2;
+}
+```
+
+#### Routing
+
+```solidity
+contract Routing {
+    // Mapping for Port:Application
+    mapping(string => IModule) public apps;
+}
+```
+
+#### Application interface
+
+```solidity
+interface IModule {
+    // onRecvPacket handles the sub packet
+    // Must return the acknowledgement bytes
+    // In the case of an asynchronous acknowledgement, nil should be returned.
+    function onRecvPacket(bytes calldata data)
+        external
+        returns (PacketTypes.Result memory result);
+    
+    // onAcknowledgementPacket handles the acknowledgement packet
+    function onAcknowledgementPacket(bytes calldata data, bytes calldata result)
+        external;
+}
+```
+
+### Core pseudocode
+
+#### Packet handler
+
+```solidity
+// PacketHandler handles incoming or outgoing data packets
+contract PacketHandler {
+    IRouting routing;
+    // Commitments are used to provide the proof of packet and acknowladgement with different prefix
+    mapping(bytes => bytes32) public commitments;
+    // Receipts are used to avoid replay attacks 
+    mapping(bytes => bool) public receipts;
+    
+    function sendPacket(Packet calldata packet) external {
+        abortTransactionUnless(packet.sequence = nextSequence);
+        for (uint256 i = 0; i < packet.datas.length; i++) {
+            abortTransactionUnless(checkPort(packet.datas[i].port));
+        }
+        commitments[getPacketCommitmentKey(packet)] = sha256(abi.encode(packet));
+        emit packetEvent(packet);
+    }
+
+    function recvPacket(Packet calldata packet, bytes calldata proof) external {
+        bytes memory packetReceiptKey = getPacketReceiptKey(packet)
+        abortTransactionUnless(receipts[packetReceiptKey] == false);
+        verifyPacketCommitment(packet, proof);
+        try routing.routePacket(packet) returns (bytes[] results) {
+            commitments[getPacketAcknowledgementKey(packet)] = sha256(abi.encode(results)); // success ack
+        } catch (bytes memory error) {
+            commitments[getPacketAcknowledgementKey(packet)] = error; // failure ack
+        }
+        receipts[packetReceiptKey(packet)] = true;
+    }
+
+    function recvAck(Acknowledgement memory ack) external {
+        try routing.routeAck(ack) returns (bytes[] results) {
+            deleteCommitment(ack.sequence);
+        } catch (bytes memory error) {
+            // TBD: always delete commitment
+            revert("failed to handle ack");
+        }
+    }
+}
+
+// Routing routes each sub-packet to corresponding module
+// If it fails, revert all state changes 
+contract Routing {
+    mapping(uint8 => IApp) routes;
+
+    function routePacket(Packet memory packet) public returns (bytes[] results) {
+        for (uint256 i = 0; i < packet.datas.length; i++) {
+            Data memory data = packet.datas[i];
+            try routes[data.port].recvPacket(packet, i) {
+                ack.results[i] = 0x00;
+            } catch (bytes memory) {
+                revert("failed to execute raw data");
+            }
+        }
+    }
+
+    function routeAck(Acknowledgement memory ack) public returns (bytes[] results) {
+        Packet memory packet = getPacket(ack.sequence);
+        for (uint256 i = 0; i < packet.datas.length; i++) {
+            Data memory data = packet.datas[i];
+                try routes[data.port].recvAck(packet, i, ack.results[i], ack.error) {
+                
+                } catch (bytes memory) {
+                    revert("failed to execute ack");
+                }
+        }
+    }
+}
+```
+
+#### XIBC basic contracts
+
+```solidity
+// IApp implementation: ERC20 cross-chain transfer
+contract CrossChainTransfer is IApp {
+    IPacketHandler packetHandler;
+    
+    struct ERC20TransferData {
+        string srcChain;
+        string destChain;
+        string sender;
+        string receiver;
+        bytes amount;
+        string token;
+        string oriToken;
+    }
+    
+    function sendCrossChainTransfer(address tokenAddress, address receiver, uint256 amount, 
+        string destChain, string relayChain) public {
+        if isOutGoing(tokenAddress) {
+            // send to the outgoing chain, lock token
+            IERC20(transferData.tokenAddress).transferFrom(
+                msg.sender,
+                address(this),
+                transferData.amount
+            );
+        } else {
+            // send back to origin chain, burn token
+            IERC20XIBC(tokenAddress).burnFrom(msg.sender, amount);
+        }
+        ERC20TransferData data = wrapData(tokenAddress, receiver, msg.sender, amount, destChain, relayChain);
+        Packet packet = wrapPacket(data);
+        packetHandler.sendPacket(packet);
+    }
+
+    function onRecvPacket(bytes calldata packetData) external {
+        ERC20TransferData memory transferData = abi.decode(
+            packetData,
+            (ERC20TransferData)
+        );
+        address tokenAddress = tokenBindingTraces(packetData)
+        if isOutGoing(tokenAddress) {
+            // receive in the outgoing chain, mint token
+            IERC20XIBC(packetData.).mint(to, amount)
+        } else {
+            // receive in the origin chain, unlock token
+            IERC20(packetData.oriToken.parseAddr()).transfer(
+                packetData.receiver.parseAddr(),
+                packetData.amount.toUint256()
+            );
+        }
+    }
+
+    function onAcknowledgementPacket(bytes calldata packetData, bytes calldata result) external {
+        ERC20TransferData memory transferData = abi.decode(
+            packetData,
+            (ERC20TransferData)
+        );
+
+        if (err.length > 0) {
+          // Refund token to sender address
+          IERC20(transferData.tokenAddress).transfer(
+              transferData.sender,
+              transferData.amount
+          );          
+        } else {
+          // Successful acknowledgement execution logic
+          // Do nothing
+        } 
+    }
+}
+
+// IApp implementation: cross-chain contract call
+contract CrossChainConractCall is IApp {
+    IPacketHandler packetHandler;
+    
+    struct RCCData {
+        address contractAddress;
+        bytes data;
+        string destChain;
+        string relayChain;
+    }
+    
+    function sendRemoteContractCall(address contractAddress, byte32 data, string destChain, string relayChain) public {
+        ConractCallData data = wrapData(contractAddress, args, destChain, relayChain);
+        Packet packet = wrapPacket(data);
+        packetHandler.sendPacket(packet);
+    }
+
+    function onRecvPacket(bytes calldata packetData) external {
+        RCCData memory rccData = abi.decode(
+            packetData,
+            (ConractCallData)
+        );
+        
+        packetData.contractAddress.call(packetData.data);
+    }
+
+    function onAcknowledgementPacket(bytes calldata data, bytes calldata result) external {
+        acks[sha256(data)] = result;
+        emit Ack(sha256(data), result);
+    }
+}
+```
+
+## Usage Scenarios
+
+XIBC protocol supports multiple status verifications and composable applications, which can be used for any interoperability between chains. Some application examples are [here](./examples.md).
