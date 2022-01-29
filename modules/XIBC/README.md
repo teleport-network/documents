@@ -7,7 +7,7 @@ parent:
 
 # `XIBC`
 
-Teleport Extensible Inter-blockchain Communication Protocol.
+Teleport Extensible Inter-Blockchain Communication Protocol.
 
 ## Synopsis
 
@@ -83,7 +83,7 @@ Contracts communicate with each other by sending packets over XIBC ports. All XI
 
 * A set of sub-packets. each packet contains:
   * PortID
-    This port allow the contracts to know the receiver contract of a given packet.
+    This port allows the contracts to know the receiver contract of a given packet.
   * Data
 
 Contracts send custom application data to each other inside the `Data []byte` field of the XIBC sub-packet. Sub-packet data is completely opaque to XIBC handlers. The sender contract must encode their application-specific packet information into the Data field of packets. The receiver contract must decode that Data back to the original application data.
@@ -98,7 +98,7 @@ Contracts also write application-specific acknowledgements when processing a pac
 
 * Synchronously on `OnRecvPacket` if the contract processes packets as soon as they are received from XIBC contract.
 
-* Asynchronously if contract processes packets at some later point after receiving the packet.
+* Asynchronously if the contract processes packets at some later point after receiving the packet.
 
 This acknowledgement data is opaque to XIBC much like the packet Data and is treated by XIBC as a simple byte string `[]byte`. The receiver contracts must encode their acknowledgement so that the sender contact can decode it correctly.
 
@@ -338,7 +338,7 @@ Because the relayer is positively motivated, we can think that sufficient cross-
 
 Therefore, when the user finds that his cross-chain transaction is not executed in time, he can increase his transaction fee to promote the cross-chain transaction.
 
-XIBC alows user replace cross-chain operation with higher cross-chain fees by specifying the packet sequence.
+XIBC allows users to replace cross-chain operation with higher cross-chain fees by specifying the packet sequence.
 
 ## Technical Specification
 
