@@ -184,7 +184,7 @@ Relayer
 
 #### SendPacket
 
-Users can use XIBC basic contracts for cross-chain interoperability, such as cross-chain transfer and cross-chain govern, or they can implement their own cross-chain operation contracts based on XIBC basic contracts.
+Users can use XIBC basic contracts for cross-chain interoperability, such as cross-chain transfer and cross-chain governance, or they can implement their own cross-chain operation contracts based on XIBC basic contracts.
 
 ```text
                                         +-----------------+ 
