@@ -123,11 +123,11 @@ After an acknowledgement is received successfully on the original sender the cha
     Relayer-->ChainA: Listen for cross-chain packet
     Relayer-->ChainA: Query proof and header
     Relayer->Teleport: Update header, relay packet
-    Teleport->Teleport: execute packet, generate acknowledge
-    Relayer-->Teleport: Listen for acknowledge
-    Relayer-->Teleport: Query acknowledge proof and Header
-    Relayer->ChainA: Update header，relay acknowledge
-    ChainA->ChainA: Execute acknowledge
+    Teleport->Teleport: execute packet, generate ack
+    Relayer-->Teleport: Listen for ack
+    Relayer-->Teleport: Query ack proof and Header
+    Relayer->ChainA: Update header，relay ack
+    ChainA->ChainA: Execute ack
 ```
 
 ### Participating chain <--> participating chain
@@ -149,15 +149,15 @@ After an acknowledgement is received successfully on the original sender the cha
     Relayer2-->Teleport: Listen for cross-chain packet
     Relayer2-->Teleport: Query proof and header
     Relayer2->ChainB: Update header, relay packet
-    ChainB->ChainB: execute packet, generate acknowledge
+    ChainB->ChainB: execute packet, generate ack
     Relayer2-->ChainB: Listen for
-    Relayer2-->ChainB: Query acknowledge proof and header
-    Relayer2->Teleport: Update header，relay acknowledge
-    Teleport->Teleport: Store acknowledge 
-    Relayer1-->Teleport: Listen for acknowledge
-    Relayer1-->Teleport: Query acknowledge proof and header
-    Relayer1->ChainA: Update header，relay acknowledge
-    ChainA->ChainA: Execute acknowledge
+    Relayer2-->ChainB: Query ack proof and header
+    Relayer2->Teleport: Update header，relay ack
+    Teleport->Teleport: Store ack
+    Relayer1-->Teleport: Listen for ack
+    Relayer1-->Teleport: Query ack proof and header
+    Relayer1->ChainA: Update header，relay ack
+    ChainA->ChainA: Execute ack
 ```
 
 ### Client updating
@@ -233,7 +233,7 @@ Users can use XIBC basic contracts for cross-chain interoperability, such as cro
                                       |                    |
                                       |   save receipt,    |
                                       |   handle packet,   |
-                                      |  save acknowledge  |
+                                      |  save ack  |
                                       |                    |
                                       +--------------------+ 
                                                 |
