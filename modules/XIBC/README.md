@@ -13,7 +13,7 @@ Teleport Extensible Inter-Blockchain Communication Protocol.
 
 XIBC is an extension of IBC. It is an interoperability protocol for communicating arbitrary data between arbitrary state machines, which can be used to build a wide range of cross-chain applications, including but not limited to token transfers, non-fungible token transfers and contract invocations. XIBC allows communications between any two chains via a third chain (e.g. Teleport Chain) trusted by both as a relay chain. 
 
-### XIBC pros vs IBC
+### Advantages comapred to IBC
 
 * Source and destination chains only need to be connected to the relay chain
 * Asset consolidation across different chains
@@ -22,7 +22,7 @@ XIBC is an extension of IBC. It is an interoperability protocol for communicatin
 * Alternative cross-chain approaches such as `Multi-Party Threshold Signature` and `ZK verify`
 * Clean-up data packets at the end of life cycle
 
-### Characteristics
+### Features
 
 * Secure, reliable cross-chain interoperability protocol based on cryptography
 * Support easy and seamless integration, arbitrary data cross-chain communication, atomic cross-chain contract invocation among homogeneous and heterogeneous chains
@@ -150,14 +150,14 @@ After an acknowledgement is received successfully on the original sender the cha
 
 ### Client updating
 
-When the relayer observes that the client needs to be updated(e.g. a new cross-chain data packet needs to be accepted, the client will lose its activity), it will obtain the appropriate client state from the counterparty chain.
+When the relayer observes that the dest chain client state is obsolete for cross-chain packet verification, it will fetch the appropriate client state from the source chain and send a transaction on dest chain to update the state.
 
 Relayer
 
 ```text
                                                 |
-                                                | Client relayed from relayer that as
-                                                | an observer of the counterparty chain
+                                                | relayers relay the client state
+                                                | from the counterparty chain
                                                 v
                                         +-----------------+ 
                                         |                 |
