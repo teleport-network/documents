@@ -44,7 +44,9 @@ XIBC clients are verification programs that are identified by a unique client id
 * BSC
 * Arbitrum
 
-### Proofs and Paths
+### Packets
+
+#### Proofs and Paths
 
 In XIBC, blockchains do not directly pass messages to each other over the network.
 
@@ -52,13 +54,7 @@ To communicate, a blockchain commits some state to a precisely defined path rese
 
 A relayer process monitors updates to these paths and relays messages by submitting the data stored under the path along with a proof of the data to the counterparty chain.
 
-### Ports
-
-An XIBC contract can bind to any number of ports. Each port must be identified by a unique portID. Since XIBC is designed to be secure with mutually-distrusted modules that operate on the same ledger, binding a port returns the dynamic object capability. To take action on a particular port, for example, to send a packet with its portID, a module must provide the dynamic object capability to the XIBC handler.
-
-XIBC contracts are for claiming the capability that is returned on `BindPort`.
-
-### Packets
+#### Packets
 
 Contracts communicate with each other by sending packets over XIBC ports. All XIBC packets contain:
 
@@ -76,11 +72,11 @@ Contracts communicate with each other by sending packets over XIBC ports. All XI
 
 Contracts send custom application data to each other inside the `Data []byte` field of the XIBC sub-packet. Sub-packet data is completely opaque to XIBC handlers. The sender contract must encode their application-specific packet information into the Data field of packets; the receiver contract must decode that Data back to the original application data.
 
-### Receipts
+#### Receipts
 
 XIBC writes a packet receipt for each sequence it has received. This receipt contains no information and is simply a marker intended to signify that the destination chain has received a packet at the specified sequence. This avoids the double spending issue.
 
-### Acknowledgements
+#### Acknowledgements
 
 Contracts also write application-specific acknowledgements when processing a packet. Acknowledgements can be done:
 
@@ -95,6 +91,20 @@ The acknowledgement can encode whether the packet processing succeeded or failed
 After the acknowledgement has been written by the receiving chain, a relayer relays the acknowledgement back to the original sender contract which then executes application-specific acknowledgment logic using the contents of the acknowledgement. This acknowledgement can involve rolling back packet-send changes in the case of a failed acknowledgement (refunding senders).
 
 After an acknowledgement is received successfully on the original sender the chain, the XIBC contact deletes the corresponding packet commitment as it is no longer needed.
+
+### Routing and Basic applications
+
+Routing contract maintains the mapping between ports and basic applications, and routes each sub-packet(or sub-acknowledgement) to each basic application to execute their own logic.
+
+#### Ports
+
+An XIBC basic application contract can bind to any number of ports. Each port must be identified by a unique portID. Since XIBC is designed to be secure with mutually-distrusted contracts that operate on the same ledger, binding a port returns the dynamic object capability. To take action on a particular port, for example, to send a packet with its portID, An XIBC basic application contract must provide the dynamic object capability to the XIBC handler.
+
+XIBC contracts are for claiming the capability that is returned on `BindPort`.
+
+#### Basic applications
+
+The cornerstone of application development based on the XIBC protocol. The module contains token-transfer, remote-contract-call and multi-contract-call, which can be directly adopted for cross-chain transactions or cross-chain dApps development
 
 ## Workflows
 
