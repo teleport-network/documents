@@ -25,7 +25,7 @@ XIBC is an extension of [IBC](https://ibcprotocol.org/). It is an interoperabili
 ### Features
 
 * Secure, reliable cross-chain interoperability protocol based on cryptography
-* Support easy and seamless integration, arbitrary data cross-chain communication, atomic cross-chain contract invocation among homogeneous and heterogeneous chains
+* Support seamless integration, arbitrary data cross-chain communication, atomic cross-chain contract invocation among homogeneous and heterogeneous chains
 * Composable state verifications and applications
 * Efficient and verifiable relay chain
 
