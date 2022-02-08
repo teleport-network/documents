@@ -11,7 +11,7 @@ Teleport Extensible Inter-Blockchain Communication Protocol.
 
 ## Synopsis
 
-XIBC is an extension of IBC. It is an interoperability protocol for communicating arbitrary data between arbitrary state machines, which can be used to build a wide range of cross-chain applications, including but not limited to token transfers, non-fungible token transfers and contract invocations. XIBC allows communications between any two chains via a third chain (e.g. Teleport Chain) trusted by both as a relay chain. 
+XIBC is an extension of [IBC](https://ibcprotocol.org/). It is an interoperability protocol for communicating arbitrary data between arbitrary state machines, which can be used to build a wide range of cross-chain applications, including but not limited to token transfers, non-fungible token transfers and contract invocations. XIBC allows communications between any two chains via a third chain (e.g. Teleport Chain) trusted by both as a relay chain. 
 
 ### Advantages comapred to IBC
 
