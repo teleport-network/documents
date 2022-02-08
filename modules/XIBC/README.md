@@ -44,7 +44,7 @@ XIBC clients are verification programs that are identified by a unique client id
 * BSC
 * Arbitrum
 
-### Packet
+### Message
 
 #### Proof and Path
 
