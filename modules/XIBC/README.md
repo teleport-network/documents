@@ -16,7 +16,7 @@ XIBC is an extension of [IBC](https://ibcprotocol.org/). It is an interoperabili
 ### Advantages comapred to IBC
 
 * Source and destination chains only need to be connected to the relay chain
-* Asset consolidation across different chains
+* Asset aggregation across different chains
 * Better support for non-BFT consensus chains, e.g. Bitcoin and Ethereum
 * Cross-chain interoperability for Smart Contracts
 * Alternative cross-chain approaches such as `Multi-Party Threshold Signature` and `ZK verify`
