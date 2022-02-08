@@ -11,28 +11,21 @@ Teleport Extensible Inter-Blockchain Communication Protocol.
 
 ## Synopsis
 
-XIBC is an extension of [IBC](https://ibcprotocol.org/). It is an interoperability protocol for communicating arbitrary data between arbitrary state machines.
+XIBC is an extension of [IBC](https://ibcprotocol.org/). It is an interoperability protocol for communicating arbitrary data between arbitrary state machines, which can be used to build a wide range of cross-chain applications, including but not limited to token transfers, non-fungible token transfers and contract invocations. XIBC allows communications between any two chains via a third chain (e.g. Teleport Chain) trusted by both as a relay chain. 
 
-XIBC can be used to build a wide range of cross-chain applications, including but not limited to token transfers, non-fungible token transfers and contract invocations.
+### Advantages comapred to IBC
 
-XIBC allows two chains to communicate via a third chain(e.g. Teleport) which they both trust as a relay chain.
+* Source and destination chains only need to be connected to the relay chain
+* Asset consolidation across different chains
+* Better support for non-BFT consensus chains, e.g. Bitcoin and Ethereum
+* Cross-chain interoperability for Smart Contracts
+* Alternative cross-chain approaches such as `Multi-Party Threshold Signature` and `ZK verify`
+* Clean-up data packets at the end of life cycle
 
-### Differences from IBC
-
-* The participating chains only need to be connected to the relay chain
-* Better support for non-BFT consensus machines, e.g. Bitcoin and Ethereum
-* Support cross-chain interoperability for contracts
-* Multiple cross-chain interoperability in one packet
-* Composable state verifications, such as `Multi-Party Threshold Signature` and `ZK verify`
-* Clean up data packets at the end of their life cycle
-
-### Characteristics
+### Features
 
 * Secure, reliable cross-chain interoperability protocol based on cryptography
-* Easy and seamless integration
-* Support homogeneous and heterogeneous chains
-* Support arbitrary data cross-chain communication
-* Support atomic cross-chain contract invocation
+* Support seamless integration, arbitrary data cross-chain communication, atomic cross-chain contract invocation among homogeneous and heterogeneous chains
 * Composable state verifications and applications
 * Efficient and verifiable relay chain
 
@@ -40,13 +33,7 @@ XIBC allows two chains to communicate via a third chain(e.g. Teleport) which the
 
 ### Clients
 
-XIBC clients are verification machines that are identified by a unique client id. XIBC clients track the consensus states of other blockchains and the proof specs of those blockchains that are required to properly verify proofs against the client's consensus state. The XIBC defines several basic client type:
-
-* Light client
-* [TSS client](./tss.md)
-* ZK client
-
-They can be combined to verify any chain. The first supported blockchains include:
+XIBC clients are verification programs that are identified by a unique client id. XIBC clients track the consensus states of other blockchains and the proof specs of blockchains that are required to properly verify proofs against the client's consensus state. XIBC defines several basic client types: light client, [TSS client](./tss.md), and ZK client, which can be combined with each other to verify any chain. The first batch of blockchains supported include:
 
 * Bitcoin
 * Ethereum
@@ -55,6 +42,7 @@ They can be combined to verify any chain. The first supported blockchains includ
 * Solona
 * Polygon
 * BSC
+* Arbitrum
 
 ### Proofs and Paths
 
@@ -62,13 +50,13 @@ In XIBC, blockchains do not directly pass messages to each other over the networ
 
 To communicate, a blockchain commits some state to a precisely defined path reserved for a specific message type and a specific counterparty. For example, a blockchain that stores a specific endpoint as part of a packet intended to be relayed to a contract on the counterparty chain.
 
-A relayer process monitors updates to these paths and relays messages by submitting the data stored under the path along with a proof of that data to the counterparty chain.
+A relayer process monitors updates to these paths and relays messages by submitting the data stored under the path along with a proof of the data to the counterparty chain.
 
 ### Ports
 
 An XIBC contract can bind to any number of ports. Each port must be identified by a unique portID. Since XIBC is designed to be secure with mutually-distrusted modules that operate on the same ledger, binding a port returns the dynamic object capability. To take action on a particular port, for example, to send a packet with its portID, a module must provide the dynamic object capability to the XIBC handler.
 
-XIBC contracts are responsible for claiming the capability that is returned on `BindPort`.
+XIBC contracts are for claiming the capability that is returned on `BindPort`.
 
 ### Packets
 
@@ -86,7 +74,7 @@ Contracts communicate with each other by sending packets over XIBC ports. All XI
     This port allows the contracts to know the receiver contract of a given packet.
   * Data
 
-Contracts send custom application data to each other inside the `Data []byte` field of the XIBC sub-packet. Sub-packet data is completely opaque to XIBC handlers. The sender contract must encode their application-specific packet information into the Data field of packets. The receiver contract must decode that Data back to the original application data.
+Contracts send custom application data to each other inside the `Data []byte` field of the XIBC sub-packet. Sub-packet data is completely opaque to XIBC handlers. The sender contract must encode their application-specific packet information into the Data field of packets; the receiver contract must decode that Data back to the original application data.
 
 ### Receipts
 
@@ -162,14 +150,14 @@ After an acknowledgement is received successfully on the original sender the cha
 
 ### Client updating
 
-When the relayer observes that the client needs to be updated(e.g. a new cross-chain data packet needs to be accepted, the client will lose its activity), it will obtain the appropriate client state from the counterparty chain.
+When the relayer observes that the dest chain client state is obsolete for cross-chain packet verification, it will fetch the appropriate client state from the source chain and send a transaction on dest chain to update the state.
 
 Relayer
 
 ```text
                                                 |
-                                                | Client relayed from relayer that as
-                                                | an observer of the counterparty chain
+                                                | relayers relay the client state
+                                                | from the counterparty chain
                                                 v
                                         +-----------------+ 
                                         |                 |
@@ -184,7 +172,7 @@ Relayer
 
 #### SendPacket
 
-Users can use XIBC basic contracts for cross-chain interoperability, such as cross-chain transfer and cross-chain governance, or they can implement their own cross-chain operation contracts based on XIBC basic contracts.
+Users can use XIBC basic contracts for cross-chain interoperability, such as cross-chain transfer and governance, or implement their own cross-chain operation contracts based on XIBC basic contracts.
 
 ```text
                                         +-----------------+ 
@@ -328,17 +316,14 @@ Users can use XIBC basic contracts for cross-chain interoperability, such as cro
 
 ## Relayer Incentivisation
 
-The relay process must have access to accounts on both chains with sufficient balance to pay for transaction fees, in order to ensure the forward flow of cross-chain data packets, incentivisation is necessary.
+The relay process must have the access to accounts on both chains with sufficient balance to pay for transaction fees, in order to ensure the forward flow of cross-chain data packets, incentivisation is necessary.
 
-User can specify a cross-chain fee for the packet, and when the acknowledgement is sent back to the originating chain, the relayer will get the fee.
+A user can specify a cross-chain fee for the packet. Once the acknowledgement is sent back to the source chain, the relayer will get the fee.
 
 ## Exception Handling
 
-Because the relayer is positively motivated, we can think that sufficient cross-chain transaction fees will allow cross-chain operations to be actively executed.
+It can be considered that sufficient cross-chain transaction fees paid to relayers will positively motivate cross-chain operations to be actively executed. When a user finds his cross-chain transaction has not been executed in time, he may increase transaction fees to accelerate. However, XIBC allows users to specify other packet sequences without adding extra transaction fees. 
 
-Therefore, when the user finds that his cross-chain transaction is not executed in time, he can increase his transaction fee to promote the cross-chain transaction.
-
-XIBC allows users to replace cross-chain operation with higher cross-chain fees by specifying the packet sequence.
 
 ## Technical Specification
 
@@ -634,4 +619,4 @@ contract CrossChainConractCall is IApp {
 
 ## Usage Scenarios
 
-XIBC protocol supports multiple status verifications and composable applications, which can be used for any interoperability between chains. Some application examples are [here](./examples.md).
+XIBC protocol supports multiple status verifications and composable applications, which can be used for any interoperability between chains. You can check some practices [here](./examples.md).
