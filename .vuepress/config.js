@@ -64,7 +64,7 @@ module.exports = {
             testnet_version_number: '1',
         },
         logo: {
-            src: '',
+            src: 'logo.png',
         },
         algolia: {
             id: 'BH4D9OD16A',
@@ -208,10 +208,10 @@ module.exports = {
             }
         },
         footer: {
-            logo: '',
+            logo: 'logo.png',
             textLink: {
-              text: 'teleport',
-              url: ''
+              text: 'teleport.network',
+              url: 'https://teleport.network'
             },
             services: [
               {
