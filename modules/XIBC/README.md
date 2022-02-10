@@ -109,53 +109,11 @@ The cornerstone of application development based on the XIBC protocol. The modul
 
 ### Participating chain <--> relay chain
 
-```sequence
-    participant User
-    participant ChainA
-    participant Relayer
-    participant Teleport
-
-    User->ChainA: Send cross-chain tx 
-    ChainA->ChainA:  Generate cross-chain packet
-    Relayer-->ChainA: Listen for cross-chain packet
-    Relayer-->ChainA: Query proof and header
-    Relayer->Teleport: Update header, relay packet
-    Teleport->Teleport: execute packet, generate ack
-    Relayer-->Teleport: Listen for ack
-    Relayer-->Teleport: Query ack proof and Header
-    Relayer->ChainA: Update header，relay ack
-    ChainA->ChainA: Execute ack
-```
+![chain2tele](./chain2tele.svg)
 
 ### Participating chain <--> participating chain
 
-```sequence
-    participant User
-    participant ChainA
-    participant Relayer1
-    participant Teleport
-    participant Relayer2
-    participant ChainB
-
-    User->ChainA: Send cross-chain tx 
-    ChainA->ChainA: Generate cross-chain packet
-    Relayer1-->ChainA: Listen for cross-chain packet
-    Relayer1-->ChainA: Query proof and header
-    Relayer1->Teleport: Update header, relay packet
-    Teleport->Teleport: Store packet
-    Relayer2-->Teleport: Listen for cross-chain packet
-    Relayer2-->Teleport: Query proof and header
-    Relayer2->ChainB: Update header, relay packet
-    ChainB->ChainB: execute packet, generate ack
-    Relayer2-->ChainB: Listen for
-    Relayer2-->ChainB: Query ack proof and header
-    Relayer2->Teleport: Update header，relay ack
-    Teleport->Teleport: Store ack
-    Relayer1-->Teleport: Listen for ack
-    Relayer1-->Teleport: Query ack proof and header
-    Relayer1->ChainA: Update header，relay ack
-    ChainA->ChainA: Execute ack
-```
+![chain2chain](./chain2chain.svg)
 
 ### Client updating
 

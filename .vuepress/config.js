@@ -57,14 +57,14 @@ module.exports = {
             testnet_ticker: 'TELE',
             rpc_url: 'http://localhost:8545/',
             rpc_url_local: 'http://localhost:8545/',
-            chain_id: '9001',
-            testnet_chain_id: '9000',
+            chain_id: '8000',
+            testnet_chain_id: '8001',
             latest_version: 'v0.1.3',
             version_number: '1',
             testnet_version_number: '1',
         },
         logo: {
-            src: '',
+            src: 'logo.png',
         },
         algolia: {
             id: 'BH4D9OD16A',
@@ -191,13 +191,13 @@ module.exports = {
             chat: {
                 title: 'Developer Chat',
                 text: 'Chat with Teleport developers on Discord.',
-                url: 'https://discord.gg/trje9XuAmy',
+                url: 'https://discord.gg/5YQtRDF4Rh',
                 bg: 'linear-gradient(103.75deg, #1B1E36 0%, #22253F 100%)'
             },
             forum: {
-                title: 'Teleport Developer Forum',
-                text: 'Join the Teleport Developer Forum to learn more.',
-                url: 'https://forum.cosmos.network/c/ethermint',
+                title: 'Teleport Medium',
+                text: 'Join the Teleport Medium to learn more.',
+                url: 'https://medium.com/@TeleportNetwork',
                 bg: 'linear-gradient(221.79deg, #3D6B99 -1.08%, #336699 95.88%)',
                 logo: 'ethereum-white'
             },
@@ -208,16 +208,60 @@ module.exports = {
             }
         },
         footer: {
-            logo: '',
+            logo: 'logo.png',
             textLink: {
-
+              text: 'teleport.network',
+              url: 'https://teleport.network'
             },
             services: [
-
+              {
+                service: 'github',
+                url: 'https://github.com/teleport-network/teleport'
+              },
+              {
+                service: "discord",
+                url: "https://discord.gg/5YQtRDF4Rh",
+              },
+              {
+                service: "twitter",
+                url: "https://twitter.com/TeleportChain",
+              },
+              {
+                service: "telegram",
+                url: "https://t.me/TeleportNetwork",
+              },
+              {
+                service: "medium",
+                url: "https://medium.com/@TeleportNetwork",
+              },
             ],
-            smallprint: 'This website is maintained by Teleport Network Ltd.',
-            links: []
-        },
+            smallprint: 'This website is maintained by Teleport Network',
+            links: [{
+              title: 'Documentation',
+              children: [{
+                title: 'Cosmos SDK Docs',
+                url: 'https://docs.cosmos.network/master/'
+              },
+              {
+                title: 'Ethereum Docs',
+                url: 'https://ethereum.org/developers'
+              },
+              {
+                title: 'Tendermint Core Docs',
+                url: 'https://docs.tendermint.com'
+              }
+              ]
+            },
+            {
+              title: 'Community',
+              children: [{
+                title: 'Teleport Community',
+                url: 'https://discord.gg/5YQtRDF4Rh'
+              },
+              ]
+            }
+            ]
+          },
         versions: [{
             "label": "main",
             "key": "main"

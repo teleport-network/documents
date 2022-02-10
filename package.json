@@ -20,7 +20,7 @@
         "cryptocurrency",
         "evm"
     ],
-    "author": "Tharsis",
+    "author": "Teleport Network",
     "license": "ISC",
     "dependencies": {
         "entities": "^2.0.3",
