@@ -33,7 +33,7 @@ XIBC is an extension of [IBC](https://ibcprotocol.org/). It is an interoperabili
 
 ### Client
 
-XIBC clients are verification programs that are identified by a unique client id. XIBC clients track the consensus states of other blockchains and the proof specs of blockchains that are required to properly verify proofs against the client's consensus state. XIBC defines several basic client types: light client, [TSS client](./tss.md), and ZK client, which can be combined with each other to verify any chain. The first batch of blockchains supported include:
+XIBC clients are verification programs that are identified by a unique client id. XIBC clients track the consensus states of other blockchains and the proof specs of blockchains that are required to properly verify proofs against the client's consensus state. XIBC defines several basic client types: light client, [TSS client](./tss-spec.md), and ZK client, which can be combined with each other to verify any chain. The first batch of blockchains supported include:
 
 * Bitcoin
 * Ethereum
