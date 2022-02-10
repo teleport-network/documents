@@ -33,7 +33,7 @@ export PATH=$PATH:$(go env GOPATH)/bin
 ## Install Binaries
 
 ::: tip
-The latest {{ $themeConfig.project.name }} [version](https://github.com/tharsis/teleport/releases) is `{{ $themeConfig.project.binary }} {{ $themeConfig.project.latest_version }}`
+The latest {{ $themeConfig.project.name }} [version](https://github.com/teleport-network/teleport/releases) is `{{ $themeConfig.project.binary }} {{ $themeConfig.project.latest_version }}`
 :::
 
 ### GitHub
@@ -41,7 +41,7 @@ The latest {{ $themeConfig.project.name }} [version](https://github.com/tharsis/
 Clone and build {{ $themeConfig.project.name }} using `git`:
 
 ```bash
-git clone https://github.com/tharsis/teleport.git
+git clone https://github.com/teleport-network/teleport.git
 cd teleport
 make install
 ```
@@ -69,8 +69,8 @@ teleport version
 
 ### Releases
 
-You can also download a specific release available on the {{ $themeConfig.project.name }} [repository](https://github.com/tharsis/teleport/releases) or via command line:
+You can also download a specific release available on the {{ $themeConfig.project.name }} [repository](https://github.com/teleport-network/teleport/releases) or via command line:
 
 ```bash
-go install github.com/tharsis/teleport@latest
+go install github.com/teleport-network/teleport@latest
 ```
