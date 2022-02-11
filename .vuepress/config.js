@@ -38,7 +38,7 @@ module.exports = {
         ['link', { rel: "manifest", href: "/site.webmanifest" }],
         ['meta', { name: "msapplication-TileColor", content: "#2e3148" }],
         ['meta', { name: "theme-color", content: "#ffffff" }],
-        ['link', { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" }],
+        ['link', { rel: "icon", type: "image/png", href: "/favicon.png" }],
         // ['link', { rel: "apple-touch-icon-precomposed", href: "/apple-touch-icon-precomposed.png" }],
     ],
     themeConfig: {
