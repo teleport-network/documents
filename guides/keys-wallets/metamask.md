@@ -45,16 +45,6 @@ Here is the list of fields that you can use to paste on Metamask:
 
 ## Import Account to Metamask
 
-### Automatic Import
-
-Once you have added {{ $themeConfig.project.name }} to the Metamask `Networks`, you can automatically import your accounts by:
-
-1. Go to the official EVM Chain ID Registry website: [chainlist.org](https://chainlist.org/)
-2. Search for `"Teleport"`
-   ![chainlist.org website](./../img/chainlist.png)
-3. Click the `Connect Wallet` button under `Teleport Testnet`
-   ![add accounts via chainlist](./../img/chainlist_metamask.png)
-
 ### Manual Import
 
 Close the `Settings`, go to `My Accounts` (top right circle) and select `Import Account`. You should see an image like the following one:
