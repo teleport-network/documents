@@ -109,13 +109,13 @@ teleport config
 
 We can make changes to the default settings upon our choices, so it allows users to set the configuration beforehand all at once, so it would be ready with the same config afterward.
 
-For example, the chain identifier can be changed to `teleport_8000-1` from a blank name by using:
+For example, the chain identifier can be changed to `teleport_8001-1` from a blank name by using:
 
 ```bash
-teleport config "chain-id" teleport_8000-1
+teleport config "chain-id" teleport_8001-1
 teleport config
 {
- "chain-id": "teleport_8000-1",
+ "chain-id": "teleport_8001-1",
  "keyring-backend": "os",
  "output": "text",
  "node": "tcp://localhost:26657",
@@ -135,7 +135,7 @@ Alternatively, we can directly make the changes to the config values in one plac
 
 # The network chain ID
 
-chain-id = "teleport_8000-1"
+chain-id = "teleport_8001-1"
 
 # The keyring's backend, where the keys are stored (os|file|kwallet|pass|test|memory)
 
@@ -154,12 +154,12 @@ node = "tcp://localhost:26657"
 broadcast-mode = "sync"
 ```
 
-After the necessary changes are made in the `client.toml`, then save. For example, if we directly change the chain-id from `teleport_8000-1` to `teleporttest_8000-1`, and output to number, it would change instantly as shown below.
+After the necessary changes are made in the `client.toml`, then save. For example, if we directly change the chain-id from `teleport_8001-1` to `teleporttest_8001-1`, and output to number, it would change instantly as shown below.
 
 ```bash
 teleport config
 {
- "chain-id": "teleporttest_8000-1",
+ "chain-id": "teleporttest_8001-1",
  "keyring-backend": "os",
  "output": "number",
  "node": "tcp://localhost:26657",

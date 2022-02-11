@@ -80,7 +80,7 @@ teleport tx send \
     test1 \
     teleport1e0fx0q9meawrcq7fmma9x60gk35lpr4xk3884m \
     10000000000000000000atele \
-    --chain-id=teleport_8000-1 \
+    --chain-id=teleport_8001-1 \
     --gas=auto \
     --fees=1000000atele \
     --broadcast-mode=block
@@ -97,7 +97,7 @@ teleport tx send \
     5000000000000000000atele \
     --gas=200000 \
     --fees=1000000atele \
-    --chain-id=teleport_8000-1 \
+    --chain-id=teleport_8001-1 \
     --generate-only > unsignedTx.json
 ```
 
@@ -152,7 +152,7 @@ teleport tx sign \
     --multisig=teleport1e0fx0q9meawrcq7fmma9x60gk35lpr4xk3884m \
     --from=test1 \
     --output-document=test1sig.json \
-    --chain-id=teleport_8000-1
+    --chain-id=teleport_8001-1
 ```
 
 ```sh
@@ -161,7 +161,7 @@ teleport tx sign \
     --multisig=teleport1e0fx0q9meawrcq7fmma9x60gk35lpr4xk3884m \
     --from=test2 \
     --output-document=test2sig.json \
-    --chain-id=teleport_8000-1
+    --chain-id=teleport_8001-1
 ```
 
 ### Step 4: Create multisignature
@@ -174,7 +174,7 @@ teleport tx multisign \
     multi \
     test1sig.json test2sig.json \
     --output-document=signedTx.json \
-    --chain-id=teleport_8000-1
+    --chain-id=teleport_8001-1
 ```
 
 The TX is now signed:
@@ -266,6 +266,6 @@ The TX is now signed:
 
 ```sh
 teleport tx broadcast signedTx.json \
-    --chain-id=teleport_8000-1 \
+    --chain-id=teleport_8001-1 \
     --broadcast-mode=block
 ```
