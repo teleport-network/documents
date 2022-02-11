@@ -56,7 +56,7 @@ The following table provides an example where the second row corresponds to an u
 
 | ChainID           | Identifier | EIP155 Number | Version Number |
 | ----------------- | ---------- | ------------- | -------------- |
-| `teleport_9000-1` | teleport   | 9000          | 1              |
+| `teleport_8000-1` | teleport   | 9000          | 1              |
 | `teleport_9000-2` | teleport   | 9000          | 2              |
 | `...`             | ...        | ...           | ...            |
 | `teleport_9000-N` | teleport   | 9000          | N              |

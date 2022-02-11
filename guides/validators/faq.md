@@ -61,7 +61,7 @@ teleport tx staking create-validator
     --commission-max-change-rate="0.01"
     --min-self-delegation "1"
     --moniker "validator"
-    --chain-id "teleport_9000-1"
+    --chain-id "teleport_8000-1"
     --gas auto
     --node tcp://127.0.0.1:26647
 ```
