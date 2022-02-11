@@ -54,9 +54,9 @@ The format for specifying and Teleport compatible chain-id in genesis is the fol
 
 The following table provides an example where the second row corresponds to an upgrade from the first one:
 
-| ChainID           | Identifier | EIP155 Number | Version Number |
-| ----------------- | ---------- | ------------- | -------------- |
-| `teleport_8001-1` | teleport   | 9000          | 1              |
-| `teleport_8001-2` | teleport   | 9000          | 2              |
-| `...`             | ...        | ...           | ...            |
-| `teleport_8001-N` | teleport   | 9000          | N              |
+| ChainID           | Identifier | EIP155 Number(EVM chain-id) | Version Number |
+| ----------------- | ---------- | --------------------------- | -------------- |
+| `teleport_8001-1` | teleport   | 8001                        | 1              |
+| `teleport_8001-2` | teleport   | 8001                        | 2              |
+| `...`             | ...        | ...                         | ...            |
+| `teleport_8001-N` | teleport   | 8001                        | N              |
