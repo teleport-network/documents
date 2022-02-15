@@ -4,12 +4,7 @@ order: 1
 
 # Installation
 
-Install the Teleport binaries from source. {synopsis}
-
-## Pre-requisites
-
-- [Install Go 1.17+](https://golang.org/dl/) {prereq}
-- [Install jq](https://stedolan.github.io/jq/download/) {prereq}
+Install the Teleport binaries from [teleport releases](https://github.com/teleport-network/teleport-releases). {synopsis}
 
 ## Install Binaries
 
