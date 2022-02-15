@@ -7,7 +7,7 @@ order: 2
 * Find your address on Teleport testnet via Matemask
 * Join Teleport discord with [this invite link](https://discord.gg/5YQtRDF4Rh)
 * Go to the `faucet` channel
-* Request tokens at this address in the above channel: `$$faucet <your address>`
+* Request tokens at this address in the above channel: `$faucet <your address>`
 * Check you have tokens on Teleport testnet via Matemask
 
 ## Rate limits
