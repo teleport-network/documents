@@ -55,9 +55,9 @@ Download teleport in [teleport releases](https://github.com/teleport-network/tel
 Linux example:
 
 ```
-wget https://github.com/teleport-network/teleport-releases/blob/main/binary/v0.1.0-alpha1/teleport_0.1.0-alpha1_Linux_x86_64.tar.gz
+wget https://github.com/teleport-network/teleport-releases/raw/main/binary/v0.1.0-alpha1/teleport_0.1.0-alpha1_Linux_x86_64.tar.gz
 tar zxf teleport_0.1.0-alpha1_Linux_x86_64.tar.gz
-mv teleport_0.1.0-alpha1_Linux_x86_64/bin/teleport /bin/teleport
+mv bin/teleport /usr/bin/teleport
 ```
 
 ### Copy the Genesis File

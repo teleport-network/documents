@@ -2,7 +2,7 @@
 order: 2
 -->
 
-# `teleport`
+# teleport
 
 `teleport` is the all-in-one command-line interface. It supports wallet management, queries and transaction operations {synopsis}
 
