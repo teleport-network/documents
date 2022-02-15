@@ -55,16 +55,17 @@ module.exports = {
             binary: 'teleport',
             testnet_denom: 'Tele',
             testnet_ticker: 'TELE',
-            rpc_url: 'http://localhost:8545/',
+            rpc_url_testnet: 'https://dataseed.testnet.teleport.network/',
             rpc_url_local: 'http://localhost:8545/',
+            block_explorer_url_test: 'https://evm-explorer.testnet.teleport.network/',
             chain_id: '8000',
             testnet_chain_id: '8001',
-            latest_version: 'v0.1.3',
-            version_number: '1',
-            testnet_version_number: '1',
+            latest_version: 'v0.1.0-alpha1',
+            version_number: '0.1.0',
+            testnet_version_number: '0.1.0',
         },
         logo: {
-            src: 'logo.png',
+            src: '/logo.png',
         },
         algolia: {
             id: 'BH4D9OD16A',
@@ -149,6 +150,25 @@ module.exports = {
                     ]
                 },
                 {
+                    title: 'TESTNET',
+                    children: [{
+                            title: 'Join Testnet',
+                            directory: false,
+                            path: '/testnet/join'
+                        },
+                        {
+                            title: 'Token faucet',
+                            directory: false,
+                            path: '/testnet/faucet'
+                        },
+                        {
+                            title: 'Deploy Node on Cloud',
+                            directory: false,
+                            path: '/testnet/cloud_providers'
+                        }
+                    ]
+                },
+                {
                     title: 'Specifications',
                     children: [{
                         title: 'Modules',
@@ -208,7 +228,7 @@ module.exports = {
             }
         },
         footer: {
-            logo: 'logo.png',
+            logo: '/logo.png',
             textLink: {
               text: 'teleport.network',
               url: 'https://teleport.network'
