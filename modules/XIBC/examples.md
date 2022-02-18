@@ -1,6 +1,6 @@
 # XIBC Usage examples
 
-## cross-chain nft swap
+## cross-chain NFT swap
 
 ```solidity
 // CrossChainNFTSwap base on XIBC basic contracts
@@ -33,6 +33,49 @@ contract CrossChainNFTSwap {
         uint256 nftId = matchNFTByERC20(tokenAddress, amount);
         transferNFT(nftId, receiver);
     }
+}
+```
+
+## cross-chain NFT(Extend ERC721) transfer
+
+```solidity
+// CrossChainNFT base on XIBC Extend ERC721
+contract CrossChainNFT is ERC721 {
+    IPacketHandler packetHandler;
+    address destNFTContract;
+    
+    struct NFTTransferArgs {
+        address receiver;       // token receiver
+        uint256 tokenID;        // token ID
+    }
+
+    // Wrap 1 cross-chain sub-packet: ERC721-transfer
+    function Transfer(uint256 tokenID, address receiver, string destChain, string relayChain) public {
+        bytes args = wrapNFTTransferArgs(tokenID, receiver);
+        ConractCallData conractCallData = wrapConractCallData(destNFTContract, args, destChain, relayChain);
+
+        // record sender and burn token
+        recordAndBurn(tokenID, msg.sender);
+
+        Packet packet = wrapPackets(conractCallData);
+        packetHandler.sendPacket(packet);
+    }
+
+    // This function will be callback on cross-chain contract call packet received by CrossChainConractCall
+    function Receive(address receiver, uint256 tokenID) public {
+        latestContractCallPacketData = packetHandler.getLatestContractCallPacketData();
+        authContractCallSender(latestContractCallPacketData.sender);
+
+        _mint(receiver, tokenID)
+    }
+
+    function Refund(ACK ack, ConractCallData data) public {
+        // must be errAck
+        checkAckError(ack);
+
+        // mint token back according to the sending record
+        mintBack(tokenID);
+    }    
 }
 ```
 
