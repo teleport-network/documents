@@ -39,7 +39,7 @@ contract CrossChainNFTSwap {
 ## cross-chain NFT(Extend ERC721) transfer
 
 ```solidity
-// CrossChainNFT base on XIBC Extend ERC721
+// CrossChainNFT based on XIBC Extend ERC721
 contract CrossChainNFT is ERC721 {
     IPacketHandler packetHandler;
     address destNFTContract;
