@@ -25,6 +25,35 @@ This command generates a new 24-word mnemonic phrase, persists it to the relevan
 
 By default, the keyring generates a `eth_secp256k1` keypair. The keyring also supports `ed25519` and `secp256k1` keys, which may be created by passing the `--algo` flag. A keyring can of course hold both types of keys simultaneously.
 
+## key parse
+
+You can use `teleport keys parse` for convert and print to stdout key addresses and fingerprints from hexadecimal into bech32 teleport prefixed format and vice versa.
+
+Bench32 address support:
+- prefix for account address
+- prefix for validator address
+- prefix for consensus node address
+- prefix for account public key
+- prefix for validator public key
+- prefix for consensus node public key
+
+```shell
+teleport keys parse BD0B4E309FB855D644BA64E5FB3DC3DD08F13917
+
+formats:
+- teleport1h595uvylhp2av396vnjlk0wrm5y0zwghpdv6k2
+- teleportpub1h595uvylhp2av396vnjlk0wrm5y0zwgh5p7s05
+- teleportvaloper1h595uvylhp2av396vnjlk0wrm5y0zwgh8clt0g
+- teleportvaloperpub1h595uvylhp2av396vnjlk0wrm5y0zwghjqn3w4
+- teleportvalcons1h595uvylhp2av396vnjlk0wrm5y0zwghntvhrf
+- teleportvalconspub1h595uvylhp2av396vnjlk0wrm5y0zwghrygeyy
+
+teleport keys parse teleport1h595uvylhp2av396vnjlk0wrm5y0zwghpdv6k2
+
+human: teleport
+bytes: BD0B4E309FB855D644BA64E5FB3DC3DD08F13917
+```
+
 ## Keyring Backends
 
 ### OS
