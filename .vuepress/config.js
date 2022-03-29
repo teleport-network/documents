@@ -55,7 +55,7 @@ module.exports = {
             binary: 'teleport',
             testnet_denom: 'Tele',
             testnet_ticker: 'TELE',
-            rpc_url_testnet: 'https://dataseed.testnet.teleport.network/',
+            rpc_url_testnet: 'https://evm-rpc.testnet.teleport.network/',
             rpc_url_local: 'http://localhost:8545/',
             block_explorer_url_test: 'https://evm-explorer.testnet.teleport.network/',
             chain_id: '8000',
