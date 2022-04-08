@@ -68,8 +68,8 @@ module.exports = {
             src: '/logo.png',
         },
         algolia: {
-            id: 'BH4D9OD16A',
-            key: 'a5d55fe5f540cc3bd28fa2c72f2b5bd8',
+            id: 'MOORN9SB19',
+            key: 'a44c8a99e7ea78168b4d939a938be372',
             index: 'teleport'
         },
         topbar: {
