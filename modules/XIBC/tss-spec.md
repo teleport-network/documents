@@ -8,9 +8,13 @@ We use this cryptographic technique for multi-party validation of the cross-chai
 
 ## `Architecture`
 
-<div style="text-align:center">
-<img src="./arch.jpg" width = "650" height = "400"  alt=""/>
-</div>
+[comment]: <> (<div style="text-align:left">)
+
+[comment]: <> (<img src="./tss-arch.svg" width = "650" height = "400"  alt=""/>)
+
+[comment]: <> (</div>)
+
+![tss_arch](./tss-arch.svg)
 
 The above diagram illustrates the architecture of the TSS cross-chain validation service. The service has two main modules, the TSS Node and the Bridge, which work closely together to accomplish the validation of cross-chain transactions and events based on the Tss protocol.
 
@@ -42,7 +46,7 @@ The bridge service is designed to
 #### `Relay`
 
 <div style="text-align:center">
-<img src="./relay_process.jpg" width = "650" height = "300"  alt=""/>
+<img src="./tss-spec-relayd.svg" width = "650" height = "300"  alt=""/>
 </div>
 
 The bridge service receives transactions from tss nodes, and stores them into the DB. And have another daemon process named ‘relayd’ that will query the transactions from DB, and send them to blockchain in order.
@@ -101,8 +105,8 @@ Thus, the transaction must be signed by more than 2/3 TSS signers, then the tran
 
 The participant of the `TSS` has the chance to exit or join. That means we need to regenerate the address(for verifying the signature, we call it pool address below) when the TSS members are changed, and the process of changing address must be safe and smooth.
 
-<div style="text-align:center">
-<img src="./ca_process.jpg" width = "500" height = "500"  alt=""/>
+<div style="text-align:left">
+<img src="./tss-spec-changeSigner.svg" width = "650" height = "650"  alt=""/>
 </div>
 
 1. Users send a proposal to Teleport Chain, the proposal includes the pool address(calculated by the new tss members group), each tss member's public key and their signatures
