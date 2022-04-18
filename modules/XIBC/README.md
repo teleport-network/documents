@@ -19,7 +19,7 @@ XIBC is an extension of [IBC](https://ibcprotocol.org/). It is an interoperabili
 * Asset aggregation across different chains
 * Better support for non-BFT consensus chains, e.g. Bitcoin and Ethereum
 * Cross-chain interoperability for Smart Contracts
-* Alternative cross-chain approaches such as `Multi-Party Threshold Signature` and `ZK verify`
+* Alternative cross-chain approaches such as `Light client` and `Multi-Party Threshold Signature`
 * Clean-up data packets at the end of life cycle
 
 ### Features
