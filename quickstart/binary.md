@@ -154,12 +154,12 @@ node = "tcp://localhost:26657"
 broadcast-mode = "sync"
 ```
 
-After the necessary changes are made in the `client.toml`, then save. For example, if we directly change the chain-id from `teleport_8001-2` to `teleporttest_8001-1`, and output to number, it would change instantly as shown below.
+After the necessary changes are made in the `client.toml`, then save. For example, if we directly change the chain-id from `teleport_8001-2` to `teleporttest_8001-2`, and output to number, it would change instantly as shown below.
 
 ```bash
 teleport config
 {
- "chain-id": "teleporttest_8001-1",
+ "chain-id": "teleporttest_8001-2",
  "keyring-backend": "os",
  "output": "number",
  "node": "tcp://localhost:26657",
