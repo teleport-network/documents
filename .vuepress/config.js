@@ -60,7 +60,7 @@ module.exports = {
             block_explorer_url_test: 'https://evm-explorer.testnet.teleport.network/',
             chain_id: '8000',
             testnet_chain_id: '8001',
-            latest_version: 'v0.1.0-alpha1',
+            latest_version: 'v0.1.0',
             version_number: '0.1.0',
             testnet_version_number: '0.1.0',
         },

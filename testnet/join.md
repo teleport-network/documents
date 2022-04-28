@@ -13,6 +13,7 @@ You specify the network you want to join by setting the **genesis file** and **s
 | Network Chain ID | Description                       | Version                                               |
 |------------------|-----------------------------------|--------------------------------------------------------------------------|-------------------------------------------------------|
 | `teleport_8001-1`   | Teleport 8001-1 Testnet | [`v0.1.0-alpha1`](https://github.com/teleport-network/teleport-releases/tree/main/binary/v0.1.0-alpha1) |
+| `teleport_8001-2`   | Teleport 8001-2 Testnet | [`v0.1.0`](https://github.com/teleport-network/teleport-releases/tree/main/binary/v0.1.0) |
 
 ## Install `teleport`
 
@@ -31,7 +32,7 @@ See the Official [Chain IDs](./../basics/chain_id.md#official-chain-ids) for ref
 :::
 
 ```bash
-teleport config chain-id teleport_8001-1
+teleport config chain-id teleport_8001-2
 ```
 
 ## Initialize Node
@@ -39,7 +40,7 @@ teleport config chain-id teleport_8001-1
 We need to initialize the node to create all the necessary validator and node configuration files:
 
 ```bash
-teleport init <your_custom_moniker> --chain-id teleport_8001-1
+teleport init <your_custom_moniker> --chain-id teleport_8001-2
 ```
 
 ::: danger
@@ -56,7 +57,7 @@ In the `config` directory, the most important files for configuration are `app.t
 Check the `genesis.json` file from the [`testnets`](https://github.com/teleport-network/testnets) repository and copy it over to the `config` directory: `~/.teleport/config/genesis.json`. This is a genesis file with the chain-id and genesis accounts balances.
 
 ```bash
-curl https://raw.githubusercontent.com/teleport-network/testnets/main/genesis.json > ~/.teleport/config/genesis.json
+curl https://raw.githubusercontent.com/teleport-network/testnets/main/teleport_8001-2/genesis.json > ~/.teleport/config/genesis.json
 ```
 
 Then verify the correctness of the genesis configuration file:
@@ -86,7 +87,7 @@ seeds = "<node-id>@<ip>:<p2p port>"
 You can use the following code to get seeds from the repo and add it to your config:
 
 ```bash
-SEEDS=`curl -sL https://raw.githubusercontent.com/teleport-network/testnets/main/seeds.txt | awk '{print $1}' | paste -s -d, -`
+SEEDS=`curl -sL https://raw.githubusercontent.com/teleport-network/testnets/main/teleport_8001-2/seeds.txt | awk '{print $1}' | paste -s -d, -`
 sed -i.bak -e "s/^seeds =.*/seeds = \"$SEEDS\"/" ~/.teleport/config/config.toml
 ```
 
@@ -100,7 +101,7 @@ We can set the [`persistent_peers`](https://docs.tendermint.com/master/tendermin
 available peers on the [`testnets`](https://github.com/teleport-network/testnets) repo.
 
 ```bash
-PEERS=`curl -sL https://raw.githubusercontent.com/teleport-network/testnets/main/peers.txt | sort -R | head -n 10 | awk '{print $1}' | paste -s -d, -`
+PEERS=`curl -sL https://raw.githubusercontent.com/teleport-network/testnets/main/teleport_8001-2/peers.txt | sort -R | head -n 10 | awk '{print $1}' | paste -s -d, -`
 ```
 
 Use `sed` to include them into the configuration. You can also add them manually:
