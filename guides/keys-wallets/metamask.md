@@ -28,8 +28,8 @@ Here is the list of fields that you can use to paste on Metamask:
 ::: tab Testnet
 
 - **Network Name:** `{{ $themeConfig.project.name }} Testnet`
-- **New RPC URL:** `{{ $themeConfig.project.rpc_url_testnet }}`
-- **Chain ID:** `{{ $themeConfig.project.testnet_chain_id }}`
+- **New RPC URL:** `{{ $themeConfig.project.evm_rpc_url_testnet }}`
+- **Chain ID:** `{{ $themeConfig.project.testnet_evm_chain_id }}`
 - **Currency Symbol (optional):** `{{ $themeConfig.project.testnet_ticker }}`
 - **Block Explorer URL (optional):** `{{ $themeConfig.project.block_explorer_url_test }}`
   :::
@@ -37,7 +37,7 @@ Here is the list of fields that you can use to paste on Metamask:
 
 - **Network Name:** `{{ $themeConfig.project.name }} Local`
 - **New RPC URL:** `{{ $themeConfig.project.rpc_url_local }}`
-- **Chain ID:** `{{ $themeConfig.project.testnet_chain_id }}`
+- **Chain ID:** `{{ $themeConfig.project.testnet_evm_chain_id }}`
 - **Currency Symbol (optional):** `{{ $themeConfig.project.testnet_ticker }}`
 - **Block Explorer URL (optional):** `n/a`
   :::

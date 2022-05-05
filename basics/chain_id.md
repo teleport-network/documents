@@ -13,7 +13,7 @@ Learn about the Teleport chain-id format {synopsis}
 
 | Name                          | Chain ID                                                 | Identifier | EIP155 Number                                 | Version Number                                    |
 | ----------------------------- | -------------------------------------------------------- | ---------- | --------------------------------------------- | ------------------------------------------------- |
-| Teleport - Arsia Mons Testnet | `teleport_{{ $themeConfig.project.testnet_chain_id }}-1` | teleport   | `{{ $themeConfig.project.testnet_chain_id }}` | {{ $themeConfig.project.testnet_version_number }} |
+| Teleport_8001-2 Testnet | `{{ $themeConfig.project.testnet_evm_chain_id }}` | teleport   | `{{ $themeConfig.project.testnet_evm_chain_id }}` | {{ $themeConfig.project.testnet_version_number }} |
 
 :::
 ::: tab Mainnet
