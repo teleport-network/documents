@@ -10,10 +10,13 @@ This document outlines the steps to join an existing testnet {synopsis}
 
 You specify the network you want to join by setting the **genesis file** and **seeds**. If you need more information about past networks, check our [testnets repo](https://github.com/teleport-network/testnets).
 
-| Network Chain ID | Description                       | Version                                               |
-|------------------|-----------------------------------|--------------------------------------------------------------------------|-------------------------------------------------------|
-| `teleport_8001-1`   | Teleport 8001-1 Testnet | [`v0.1.0-alpha1`](https://github.com/teleport-network/teleport-releases/tree/main/binary/v0.1.0-alpha1) |
-| `teleport_8001-2`   | Teleport 8001-2 Testnet | [`v0.1.0`](https://github.com/teleport-network/teleport-releases/tree/main/binary/v0.1.0) |
+The current testnet is [Teleport_8001-2 Testnet](https://github.com/teleport-network/testnets/tree/main/teleport_8001-2).
+
+* Chain ID: {{ $themeConfig.project.testnet_chain_id }}
+* EIP155 Chain ID: {{ $themeConfig.project.testnet_evm_chain_id }}
+* Verison: [`v0.1.0`](https://github.com/teleport-network/teleport-releases/tree/main/binary/v0.1.0)
+* RPC: {{ $themeConfig.project.rpc_url_testnet }}
+* EVM RPC: {{ $themeConfig.project.evm_rpc_url_testnet }}
 
 ## Install `teleport`
 
@@ -25,7 +28,7 @@ Make sure you have the right version of `{{ $themeConfig.project.binary }}` inst
 
 ### Save Chain ID
 
-We recommend saving the mainnet `chain-id` into your `{{ $themeConfig.project.binary }}`'s `client.toml`. This will make it so you do not have to manually pass in the `chain-id` flag for every CLI command.
+We recommend saving the mainnet `chain-id` into your `{{ $themeConfig.project.binary }}`'s `client.toml`. This will make it so you do not have to manually pass in the `chain-id` flag for every CLI command.
 
 ::: tip
 See the Official [Chain IDs](./../basics/chain_id.md#official-chain-ids) for reference.
