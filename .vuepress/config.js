@@ -33,12 +33,10 @@ module.exports = {
     ],
     head: [
         // ['link', { rel: "apple-touch-icon", sizes: "180x180", href: "/apple-touch-icon.png" }],
-        ['link', { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon32.png" }],
-        ['link', { rel: "icon", type: "image/png", sizes: "16x16", href: "/favicon16.png" }],
         ['link', { rel: "manifest", href: "/site.webmanifest" }],
         ['meta', { name: "msapplication-TileColor", content: "#2e3148" }],
         ['meta', { name: "theme-color", content: "#ffffff" }],
-        ['link', { rel: "icon", type: "image/png", href: "/favicon.png" }],
+        ['link', { rel: "icon", type: "image/svg", href: "/favicon.svg" }],
         // ['link', { rel: "apple-touch-icon-precomposed", href: "/apple-touch-icon-precomposed.png" }],
     ],
     themeConfig: {
@@ -67,7 +65,7 @@ module.exports = {
             testnet_version_number: '0.1.0',
         },
         logo: {
-            src: '/logo.png',
+            src: '/logo.svg',
         },
         algolia: {
             id: 'MOORN9SB19',
@@ -230,7 +228,7 @@ module.exports = {
             }
         },
         footer: {
-            logo: '/logo.png',
+            logo: '/logo.svg',
             textLink: {
               text: 'teleport.network',
               url: 'https://teleport.network'
